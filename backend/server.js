@@ -1,9 +1,12 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-
 import helmet from "helmet";
 import morgan from "morgan";
+
+import { initDB } from "./config/db.js";
+
+import productRoutes from "./routes/product.route.js";
 
 dotenv.config();
 
@@ -15,10 +18,10 @@ app.use(cors());
 app.use(helmet()); // helmet is a security middleware that helps you protect your app by setting various HTTP headers
 app.use(morgan("dev")); // log the requests
 
-app.get("/", (req, res) => {
-    res.status(200).json({ message: "寝ても覚めても🦔😭" });
-});
+app.use("/api/v1/products", productRoutes);
 
-app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+initDB().then(() => {
+    app.listen(PORT, () => {
+        console.log(`🦔 Server is running on http://localhost:${PORT}`);
+    });
 });
