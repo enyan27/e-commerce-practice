@@ -17,9 +17,9 @@ const HomePage = () => {
                 {/* L */}
                 <button
                     className="btn btn-primary"
-                    onClick={() => { }}
+                    onClick={() => document.getElementById("add_product_modal").showModal()}
                 >
-                    <PlusCircleIcon className="size-5 mr-2" />
+                    <PlusCircleIcon className="size-5" />
                     Add Product
                 </button>
 
@@ -31,6 +31,8 @@ const HomePage = () => {
                     <RefreshCwIcon className="size-5" />
                 </button>
             </div>
+
+            <AddProductModal />
 
             {!products.length && !isLoading && (
                 <div className="flex flex-col justify-center items-center h-96 space-y-4">
@@ -46,7 +48,7 @@ const HomePage = () => {
 
             {isLoading ? (
                 <div className="flex justify-center items-center h-64">
-                    <div className="loading loading-spinner loading-lg" />
+                    <div className="loading loading-dots loading-lg" />
                 </div>
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

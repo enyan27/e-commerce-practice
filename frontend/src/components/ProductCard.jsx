@@ -3,7 +3,7 @@ import { EditIcon, Trash2Icon } from "lucide-react";
 import { useProductStore } from "../stores";
 
 const ProductCard = ({ product }) => {
-    const { } = useProductStore();
+    const { deleteProduct } = useProductStore();
 
     return (
         <div className="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow duration-300">
@@ -33,7 +33,7 @@ const ProductCard = ({ product }) => {
 
                     <button
                         className="btn btn-sm btn-error btn-outline"
-                        onClick={() => { }}
+                        onClick={() => deleteProduct(product.id)}
                     >
                         <Trash2Icon className="size-4" />
                     </button>

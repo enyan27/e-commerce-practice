@@ -51,7 +51,7 @@ export const updateProduct = asyncHandler(async (req, res) => {
 
     const updatedProduct = await sql`
         UPDATE products
-        SET name=${name}, image=${image}, price=${price}
+        SET name=${name}, image=${image}, price=${price}, updated_at=CURRENT_TIMESTAMP
         WHERE id=${id}
         RETURNING *
     `;
