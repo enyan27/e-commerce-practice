@@ -5,11 +5,16 @@ import { AddProductModal, ProductCard } from "../components";
 import { useProductStore } from "../stores";
 
 const HomePage = () => {
-    const { products, getProducts, isLoading } = useProductStore();
+    const { products, getProducts, isLoading, resetFormData } = useProductStore();
 
     useEffect(() => {
         getProducts();
     }, [getProducts]);
+
+    const handleAddProduct = () => {
+        resetFormData();
+        document.getElementById("add_product_modal").showModal()
+    };
 
     return (
         <main className="max-w-6xl mx-auto px-4 py-8">
@@ -17,7 +22,7 @@ const HomePage = () => {
                 {/* L */}
                 <button
                     className="btn btn-primary"
-                    onClick={() => document.getElementById("add_product_modal").showModal()}
+                    onClick={handleAddProduct}
                 >
                     <PlusCircleIcon className="size-5" />
                     Add Product
