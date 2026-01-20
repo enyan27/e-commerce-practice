@@ -4,8 +4,6 @@ import dotenv from "dotenv";
 import helmet from "helmet";
 import morgan from "morgan";
 
-import { initDB } from "./config/db.js";
-
 import productRoutes from "./routes/product.route.js";
 
 dotenv.config();
@@ -20,8 +18,6 @@ app.use(morgan("dev")); // log the requests
 
 app.use("/api/v1/products", productRoutes);
 
-initDB().then(() => {
-    app.listen(PORT, () => {
-        console.log(`🦔 Server is running on http://localhost:${PORT}`);
-    });
+app.listen(PORT, () => {
+    console.log(`🦔 Server is running on http://localhost:${PORT}`);
 });

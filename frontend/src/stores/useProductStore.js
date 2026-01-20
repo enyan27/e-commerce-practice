@@ -2,6 +2,8 @@ import { create } from "zustand";
 import toast from "react-hot-toast";
 import axiosInstance from "../lib/axiosInstance";
 
+const INITIAL_DATA = { name: "", image: "", price: "" };
+
 const useProductStore = create((set, get) => {
     // this helps reduce try-catch repetition
     const asyncHandler = (fn) => async (...args) => {
@@ -9,7 +11,7 @@ const useProductStore = create((set, get) => {
         try {
             return await fn(...args);
         } catch (error) {
-            setInterval(() => { set({ products: prev }) }, 500); // rollback
+            setTimeout(() => { set({ products: prev }) }, 500); // rollback
             toast.error(error.response?.data?.message || error.message);
         } finally {
             set({ isLoading: false });
@@ -19,17 +21,17 @@ const useProductStore = create((set, get) => {
     return {
         products: [],
         isLoading: true,
-        formData: {
-            name: "",
-            image: "",
-            price: ""
-        },
+        formData: INITIAL_DATA,
         setFormData: (data) => set({ formData: data }),
-        resetFormData: () => set({ formData: { name: "", image: "", price: "" } }),
+        resetFormData: () => set({ formData: INITIAL_DATA }),
 
         getProducts: asyncHandler(async () => {
             const res = await axiosInstance.get("/products");
             set({ products: res.data.data });
+        }),
+        getProductById: asyncHandler(async (id) => {
+            const res = await axiosInstance.get(`/products/${id}`);
+            set({ formData: res.data.data });
         }),
         /**
          * we will update ui immediately
@@ -46,6 +48,10 @@ const useProductStore = create((set, get) => {
                 products: state.products.map(item => item.id === optimistic.id ? res.data.data : item)
             }));
             toast.success("Created successfully");
+        }),
+        updateProduct: asyncHandler(async (id, data) => {
+            await axiosInstance.put(`/products/${id}`, data);
+            toast.success("Updated successfully");
         }),
         deleteProduct: asyncHandler(async (id) => {
             set(state => ({
